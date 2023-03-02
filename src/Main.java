@@ -1,32 +1,18 @@
 import java.sql.*;
-import java.sql.Connection;
 
 public class Main {
     public static void main(String[] args) {
+        ClientRepository clientRepository = new ClientRepository();
+        CarRepository carRepository = new CarRepository();
+        RentalRepository rentalRepository = new RentalRepository();
         try {
-            Connection databaseConnection = getConnection();
-            ClientRepository.getClients(databaseConnection).forEach(System.out::println);
-            System.out.println(ClientRepository.getClient(databaseConnection, 1).toString());
-            ClientRepository.deleteClient(databaseConnection, 8);
+            clientRepository.getClients().forEach(System.out::println);
+            System.out.println(clientRepository.getClient(1).toString());
+            clientRepository.deleteClient(8);
+            carRepository.getCars().forEach(System.out::println);
+            rentalRepository.getRentals().forEach(System.out::println);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-    public static Connection getConnection() {
-
-        String dbURL = "jdbc:mysql://localhost:3306/rental_car_database";
-        String username = "root";
-        String password = "12345";
-        Connection connection = null;
-
-        try {
-            connection = DriverManager.getConnection(dbURL, username, password);
-        } catch (SQLException ex) {
-            System.out.println("Connection failed: " + ex.getMessage());
-        }
-
-        return connection;
-    }
-
 }

@@ -4,9 +4,15 @@ import java.util.List;
 
 public class ClientRepository {
 
-    static String query;
+    String query;
 
-    public static List<Client> getClients(Connection connection) throws SQLException {
+    Connection connection;
+
+    public ClientRepository() {
+        this.connection = SQLConnection.getConnection();
+    }
+
+    public List<Client> getClients() throws SQLException {
         List<Client> clients = new LinkedList<>();
         Statement statement = connection.createStatement();
         query = "SELECT * FROM clients";
@@ -20,13 +26,13 @@ public class ClientRepository {
         return clients;
     }
 
-    static void createClient(Connection connection, Client client) throws SQLException {
+    void createClient(Client client) throws SQLException {
         Statement statement = connection.createStatement();
         query = "INSERT INTO clients (name, age, car_license) VALUES ('" + client.getName() + "', " + client.getAge() + ", " + client.car_license + ")";
         statement.executeUpdate(query);
     }
 
-    static Client getClient(Connection connection, int id) throws SQLException {
+    Client getClient(int id) throws SQLException {
         Statement statement = connection.createStatement();
         query = "SELECT * FROM clients WHERE id = " + id;
         ResultSet resultSet = statement.executeQuery(query);
@@ -40,13 +46,13 @@ public class ClientRepository {
         return client;
     }
 
-    static void updateClient(Connection connection, Client client) throws SQLException {
+    void updateClient(Client client, int id) throws SQLException {
         Statement statement = connection.createStatement();
-        query = "UPDATE clients SET name = '" + client.getName() + "', age = " + client.getAge() + ", car_license = " + client.car_license + " WHERE id = 8";
+        query = "UPDATE clients SET name = '" + client.getName() + "', age = " + client.getAge() + ", car_license = " + client.car_license + " WHERE id = " + id;
         statement.executeUpdate(query);
     }
 
-    static void deleteClient(Connection connection, int id) throws SQLException{
+    void deleteClient(int id) throws SQLException{
         Statement statement = connection.createStatement();
         query = "DELETE FROM clients WHERE id = " + id;
         statement.executeUpdate(query);

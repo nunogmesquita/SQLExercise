@@ -26,7 +26,4 @@ public class Client {
         return age;
     }
 
-    public boolean isCar_license() {
-        return car_license;
-    }
 }

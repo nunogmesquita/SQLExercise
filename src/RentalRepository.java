@@ -7,9 +7,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class RentalRepository {
-    static String query;
+    String query;
 
-    public static List<Rental> getRental(Connection connection) throws SQLException {
+    Connection connection;
+
+    public RentalRepository() {
+        this.connection = SQLConnection.getConnection();
+    }
+
+    public List<Rental> getRentals() throws SQLException {
         List<Rental> rentals = new LinkedList<>();
         Statement statement = connection.createStatement();
         query = "SELECT * FROM rentals";
@@ -28,13 +34,13 @@ public class RentalRepository {
         return rentals;
     }
 
-    static void createRental(Connection connection, Rental rental) throws SQLException {
+    void createRental(Rental rental) throws SQLException {
         Statement statement = connection.createStatement();
         query = "INSERT INTO rentals (car_id, client_id, start_date, end_date) VALUES (" + rental.getCar_id() + ", " + rental.getClient_id() + ", '" + rental.getStart_date() + "', '" + rental.getEnd_date() +"'";
         statement.executeUpdate(query);
     }
 
-    static Rental getRental(Connection connection, int id) throws SQLException {
+    Rental getRental(int id) throws SQLException {
         Statement statement = connection.createStatement();
         query = "SELECT * FROM rentals WHERE id = " + id;
         ResultSet resultSet = statement.executeQuery(query);
@@ -50,13 +56,13 @@ public class RentalRepository {
         return rental;
     }
 
-    static void updateRental (Connection connection, Rental rental) throws SQLException {
+    void updateRental (Rental rental, int id) throws SQLException {
         Statement statement = connection.createStatement();
-        query = "UPDATE rentals SET car_id = " + rental.getCar_id() + ", client_id = " + rental.getClient_id() + ", start_date = '" + rental.getStart_date() + "', end_date = '" + rental.getEnd_date() + "' WHERE id = 1";
+        query = "UPDATE rentals SET car_id = " + rental.getCar_id() + ", client_id = " + rental.getClient_id() + ", start_date = '" + rental.getStart_date() + "', end_date = '" + rental.getEnd_date() + "' WHERE id = " + id;
         statement.executeUpdate(query);
     }
 
-    static void deleteRental(Connection connection, int id) throws SQLException{
+    void deleteRental(int id) throws SQLException{
         Statement statement = connection.createStatement();
         query = "DELETE FROM rentals WHERE id = " + id;
         statement.executeUpdate(query);

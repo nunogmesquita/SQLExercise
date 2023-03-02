@@ -6,9 +6,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CarRepository {
-    static String query;
+    String query;
 
-    public static List<Car> getCars(Connection connection) throws SQLException {
+    Connection connection;
+
+    public CarRepository() {
+        this.connection = SQLConnection.getConnection();
+    }
+
+    public List<Car> getCars() throws SQLException {
         List<Car> cars = new LinkedList<>();
         Statement statement = connection.createStatement();
         query = "SELECT * FROM cars";
@@ -25,13 +31,13 @@ public class CarRepository {
         return cars;
     }
 
-    static void createCar(Connection connection, Car car) throws SQLException {
+    void createCar(Car car) throws SQLException {
         Statement statement = connection.createStatement();
         query = "INSERT INTO cars (car_year, price, brand, model, color) VALUES (" + car.getCar_year() + ", " + car.getPrice() + ", '" + car.getBrand() + "', '" + car.getModel() + "', '" + car.getColor() + "')";
         statement.executeUpdate(query);
     }
 
-    static Car getCar(Connection connection, int id) throws SQLException {
+    Car getCar(int id) throws SQLException {
         Statement statement = connection.createStatement();
         query = "SELECT * FROM cars WHERE id = " + id;
         ResultSet resultSet = statement.executeQuery(query);
@@ -47,13 +53,13 @@ public class CarRepository {
         return car;
     }
 
-    static void updateCar(Connection connection, Car car) throws SQLException {
+    void updateCar(Car car, int id) throws SQLException {
         Statement statement = connection.createStatement();
-        query = "UPDATE cars SET car_year = " + car.getCar_year() + ", price = " + car.getPrice() + ", brand = '" + car.getBrand() + "', model = '" + car.getModel() + "', color = '" + car.getColor() + "' WHERE id = 1)";
+        query = "UPDATE cars SET car_year = " + car.getCar_year() + ", price = " + car.getPrice() + ", brand = '" + car.getBrand() + "', model = '" + car.getModel() + "', color = '" + car.getColor() + "' WHERE id = "+id;
         statement.executeUpdate(query);
     }
 
-    static void deleteCar(Connection connection, int id) throws SQLException{
+    void deleteCar(int id) throws SQLException{
         Statement statement = connection.createStatement();
         query = "DELETE FROM cars WHERE id = " + id;
         statement.executeUpdate(query);

@@ -1,10 +1,8 @@
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Rental {
      int car_id;
      int client_id;
-
      Date start_date;
      Date end_date;
 
@@ -29,5 +27,15 @@ public class Rental {
 
     public Date getEnd_date() {
         return end_date;
+    }
+
+    @Override
+    public String toString() {
+        return "Rental{" +
+                "car_id=" + car_id +
+                ", client_id=" + client_id +
+                ", start_date=" + start_date +
+                ", end_date=" + end_date +
+                '}';
     }
 }
